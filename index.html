@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Support the Global Goals · Effective Impact</title>
+<meta name="description" content="A 5-minute game: can you tell what you deliver from what really changes?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --prussian:#003153;
+  --blue:#0047AB;
+  --green:#7ED957;
+  --ink:#10283b;
+  --muted:#5b6b7b;
+  --line:#d9e2ec;
+  --bg:#ffffff;
+  --soft:#f3f7fb;
+  --c-input:#dce8f7;
+  --c-output:#a9c6ec;
+  --c-outcome:#3f72bd;
+  --c-impact:#7ED957;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:'Montserrat',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  font-size:16px;line-height:1.5;
+}
+#wrap{max-width:540px;margin:0 auto;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding:0 16px calc(24px + env(safe-area-inset-bottom))}
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 0 8px;font-size:13px;font-weight:700;color:var(--prussian)}
+.top .pts{background:var(--soft);border:1px solid var(--line);padding:3px 10px;border-radius:99px}
+.bar{height:6px;background:var(--soft);border-radius:99px;overflow:hidden;margin-bottom:18px}
+.bar i{display:block;height:100%;background:var(--green);transition:width .3s}
+h1{font-size:25px;line-height:1.2;font-weight:800;color:var(--prussian);margin:6px 0 12px}
+h2{font-size:20px;line-height:1.25;font-weight:800;color:var(--prussian);margin:4px 0 10px}
+p{margin:0 0 12px}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:4px}
+.muted{color:var(--muted);font-size:14px}
+.btn{
+  display:block;width:100%;min-height:52px;border:0;border-radius:12px;background:var(--prussian);color:#fff;
+  font:700 16px 'Montserrat',system-ui,sans-serif;padding:12px 16px;cursor:pointer;margin-top:12px;text-align:center
+}
+.btn:active{transform:scale(.99)}
+.btn.green{background:var(--green);color:var(--prussian)}
+.btn.ghost{background:#fff;color:var(--prussian);border:2px solid var(--prussian)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.chain{display:flex;flex-direction:column;gap:0;margin:14px 0 8px}
+.step{border-radius:12px;padding:12px 14px}
+.step b{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.step small{display:block;font-weight:600;opacity:.85;font-size:12px;margin-bottom:4px}
+.step span{font-size:14.5px;display:block}
+.arrow{text-align:center;color:var(--blue);font-weight:800;line-height:1.1;font-size:18px;padding:3px 0}
+.s-input{background:var(--c-input);color:var(--prussian)}
+.s-output{background:var(--c-output);color:var(--prussian)}
+.s-outcome{background:var(--c-outcome);color:#fff}
+.s-impact{background:var(--c-impact);color:var(--prussian)}
+.callout{background:var(--soft);border-left:5px solid var(--blue);border-radius:8px;padding:12px 14px;margin:14px 0;font-size:15px}
+.card{border:2px solid var(--prussian);border-radius:14px;padding:16px;margin:8px 0 14px;font-size:17px;font-weight:600;background:#fff}
+.scenario{background:var(--soft);border-radius:12px;padding:14px;margin:6px 0 14px;font-size:15px}
+.scenario p:last-child{margin:0}
+.q{font-weight:700;color:var(--prussian);margin:6px 0 10px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{
+  text-align:left;border:2px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px;min-height:52px;
+  font:600 15.5px/1.35 'Montserrat',system-ui,sans-serif;color:var(--ink);cursor:pointer;width:100%
+}
+.opt small{display:block;font-weight:500;color:var(--muted);font-size:12.5px}
+.opt:active{background:var(--soft)}
+.opt.stage{display:flex;align-items:center;gap:10px}
+.opt .dot{flex:none;width:14px;height:34px;border-radius:6px}
+.opt.right{border-color:var(--green);background:#eefbe6}
+.opt.wrong{border-color:#8a9bb0;background:#eef1f5}
+.opt[disabled]{cursor:default}
+.grid4{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fb{border-radius:12px;padding:12px 14px;margin-top:14px;font-size:15px}
+.fb.ok{background:#eefbe6;border:2px solid var(--green)}
+.fb.no{background:#eef1f5;border:2px solid #8a9bb0}
+.fb b{color:var(--prussian)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 14px}
+.chip{border:2px solid var(--line);background:#fff;border-radius:99px;padding:8px 12px;font:600 13.5px 'Montserrat',system-ui,sans-serif;color:var(--ink);cursor:pointer}
+.chip.on{border-color:var(--prussian);background:var(--prussian);color:#fff}
+label.f{display:block;font-weight:700;font-size:14px;color:var(--prussian);margin:12px 0 2px}
+label.f small{display:block;font-weight:500;color:var(--muted);font-size:12.5px}
+textarea,input[type=text]{
+  width:100%;border:2px solid var(--line);border-radius:10px;padding:10px 12px;font:500 15px/1.4 'Montserrat',system-ui,sans-serif;color:var(--ink);resize:vertical
+}
+textarea:focus,input[type=text]:focus{outline:none;border-color:var(--blue)}
+.check{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:14.5px}
+.check input{width:22px;height:22px;flex:none;margin-top:1px;accent-color:var(--prussian)}
+.score-row{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:8px 0;font-size:15px}
+.score-row b{color:var(--prussian)}
+.level{background:var(--prussian);color:#fff;border-radius:14px;padding:16px;margin:8px 0 14px}
+.level .kicker{color:var(--green)}
+.level h2{color:#fff;margin:0 0 6px}
+.spacer{flex:1}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:22px}
+a{color:var(--blue);font-weight:700}
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:20;background:linear-gradient(to top,#fff 78%,rgba(255,255,255,0));padding:14px 16px calc(12px + env(safe-area-inset-bottom))}
+.dock .btn{max-width:508px;margin:0 auto}
+#wrap{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+.compact .step{padding:8px 12px}
+.compact .step small{display:none}
+.compact .step span{font-size:13.5px;line-height:1.35}
+.compact .arrow{font-size:13px;padding:1px 0}
+.compact .callout{margin:10px 0;padding:10px 12px;font-size:14px}
+.compact h2{font-size:18px;margin:2px 0 6px}
+.compact .btn{margin-top:8px}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="app"></div></div>
+<noscript><p style="padding:20px">This game needs JavaScript. Please open it in a normal browser.</p></noscript>
+
+<script>
+/* ------------ Settings you can change ------------ */
+var YOUTUBE_URL = "";   // paste your channel or video link here; it then shows on the last screen
+
+/* ------------ Content ------------ */
+var STAGES = {
+  input:  {name:"Input",   sub:"what you put in",         cls:"s-input",   col:"#dce8f7"},
+  output: {name:"Output",  sub:"what you deliver (quantity)", cls:"s-output",  col:"#a9c6ec"},
+  outcome:{name:"Outcome", sub:"what changes for people (quality)", cls:"s-outcome", col:"#3f72bd"},
+  impact: {name:"Impact",  sub:"real long-term change",    cls:"s-impact",  col:"#7ED957"}
+};
+var KEYS = ["input","output","outcome","impact"];
+
+var ROUNDS = [
+ {
+  title:"Sort the chain",
+  intro:"<p>Meet <b>VillageDoc</b>, a small made-up venture that gives people in five villages health advice on the phone.</p><p>Each card below is one thing the team does, delivers or achieves. Tap where it belongs on the chain: <b>Input, Output, Outcome</b> or <b>Impact</b>.</p>",
+  qs:[
+   {text:"Two local health workers get basic training, and we set up a free phone-advice line.", correct:"input",
+    why:"Input is what you put in: people, time and ideas to build the solution."},
+   {text:"300 phone consultations are completed in the five villages this season.", correct:"output",
+    why:"Output is what you deliver, counted as a quantity. Here: 300 consultations."},
+   {text:"Over 3 years, fewer people in these villages become seriously ill from treatable illness than would have happened without VillageDoc.", correct:"impact",
+    why:"Impact is real long-term change, measured against what would have happened anyway without VillageDoc."},
+   {text:"Patients say the advice was clear, and 8 in 10 follow it.", correct:"outcome",
+    why:"Outcome is the change in what people do and experience after they use the service. This is about quality, not quantity."},
+   {text:"A second-hand phone, a little of our own savings and a free room from the village council.", correct:"input",
+    why:"Small resources and local support are inputs. They go in before anything is delivered."},
+   {text:"Patients are satisfied and call again when someone in the family is sick. Neighbours in the next village ask for the service too.", correct:"outcome",
+    why:"Satisfaction and loyalty are part of the outcome: how people respond to what was delivered."},
+   {text:"40 prescriptions are written down and sent to patients' phones every week.", correct:"output",
+    why:"Prescriptions sent are products and services delivered. Count them and you have an output."},
+   {text:"Families in these villages spend less on emergency trips to the hospital over the years than they otherwise would.", correct:"impact",
+    why:"Lower long-term costs than they otherwise would is a real change compared with what would have happened anyway."}
+  ]
+ }
+];
+
+/* ------------ State ------------ */
+var TOTAL_Q = 0; ROUNDS.forEach(function(r){TOTAL_Q += r.qs.length;});
+var MAXPTS = TOTAL_Q * 10;
+var S;
+function reset(){
+  S = {screen:"intro", r:0, i:-1, picked:null, answered:0,
+       score:ROUNDS.map(function(){return 0;}),
+       };
+}
+reset();
+
+/* ------------ Helpers ------------ */
+var app = document.getElementById("app");
+function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function pts(){return S.score.reduce(function(a,b){return a+b;},0);}
+function pct(){
+  var steps = TOTAL_Q;
+  var done = S.answered;
+  return Math.round(100*done/steps);
+}
+function hdr(){
+  return '<div class="top"><span>Effective Impact</span><span class="pts">'+pts()+' pts</span></div>'+
+         '<div class="bar"><i style="width:'+pct()+'%"></i></div>';
+}
+function dock(h){return '<div class="dock">'+h+'</div>';}
+function render(html){app.innerHTML = html; window.scrollTo(0,0);}
+function chainHTML(withExample){
+  var ex = {
+    input:"We develop an online course on innovating for impact.",
+    output:"The course is posted on mass online education platforms and marketed online.",
+    outcome:"Students do the course, answer questions and quizzes, play the games, practise the techniques and share their experience.",
+    impact:"Students apply their new knowledge and skills, create impactful innovations, then pitch and present them."
+  };
+  var h = '<div class="chain">';
+  KEYS.forEach(function(k,idx){
+    var s = STAGES[k];
+    h += '<div class="step '+s.cls+'"><b>'+s.name+'</b><small>'+s.sub+'</small>'+(withExample?'<span>'+ex[k]+'</span>':'')+'</div>';
+    if(idx<3) h += '<div class="arrow">↓</div>';
+  });
+  return h+'</div>';
+}
+
+/* ------------ Screens ------------ */
+function viewIntro(){
+  render(hdr()+
+   '<div class="kicker">A 2-minute game</div>'+
+   '<h1>Support the Global Goals</h1>'+
+   '<p>You want to contribute to the global goals, and your ambitions should be sky high. This game shows you how to structure them: from what you put in, to the <b>real change you intend to make</b>.</p>'+
+   dock('<button class="btn green" id="go1" onclick="viewExample()">Play the game</button>')+
+   '<div class="foot">8 quick cards. Tap where each one belongs.</div>');
+}
+function viewExample(){
+  render('<div class="compact">'+hdr()+
+   '<div class="kicker">First, an example</div>'+
+   '<h2>What our own course is aiming for</h2>'+
+   chainHTML(true)+
+   '<div class="callout"><b>The key question:</b> what would happen anyway, without your solution? Only the change on top of that is your <b>real impact</b>.</div>'+
+   ''+dock('<button class="btn green" id="go2" onclick="startGame()">Go to round 1</button>')+'</div>');
+}
+function startGame(){S.screen="round";S.r=0;S.i=-1;S.picked=null;viewRound();}
+
+function viewRound(){
+  var R = ROUNDS[S.r];
+  if(S.i===-1){
+    render(hdr()+'<div class="kicker">The game</div><h2>'+R.title+'</h2>'+R.intro+
+      (S.r===0? chainHTML(false):'')+
+      dock('<button class="btn green" onclick="beginQs()">Go</button>'));
+    return;
+  }
+  var q = R.qs[S.i], h = hdr();
+  h += '<div class="kicker">'+R.title+' · '+(S.i+1)+'/'+R.qs.length+'</div>';
+  if(q.ctx) h += '<div class="scenario">'+q.ctx+'</div>';
+  var isStage = (S.r===0);
+  if(isStage){
+    h += '<div class="card">'+esc(q.text)+'</div><div class="q">Where does this belong?</div><div class="opts">';
+    KEYS.forEach(function(k){
+      var st = STAGES[k], cls="opt stage";
+      if(S.picked!==null){ if(k===q.correct) cls+=" right"; else if(k===S.picked) cls+=" wrong"; }
+      h += '<button class="'+cls+'" '+(S.picked!==null?'disabled':'')+' onclick="pick(\''+k+'\')"><span class="dot" style="background:'+st.col+'"></span><span><b>'+st.name+'</b><small>'+st.sub+'</small></span></button>';
+    });
+    h += '</div>';
+  } else {
+    if(S.r===2) h += '<div class="card">'+esc(q.text)+'</div><div class="opts">';
+    else h += '<div class="q">'+esc(q.text)+'</div><div class="opts">';
+    q.options.forEach(function(o){
+      var cls="opt";
+      if(S.picked!==null){ if(o[0]===q.correct) cls+=" right"; else if(o[0]===S.picked) cls+=" wrong"; }
+      h += '<button class="'+cls+'" '+(S.picked!==null?'disabled':'')+' onclick="pick(\''+o[0]+'\')">'+o[1]+'</button>';
+    });
+    h += '</div>';
+  }
+  if(S.picked!==null){
+    var ok = (S.picked===q.correct);
+    h += '<div class="fb '+(ok?'ok':'no')+'"><b>'+(ok?'✓ Right! +10':'Not quite.')+'</b> '+q.why+'</div>';
+    var last = (S.i===R.qs.length-1);
+    h += dock('<button class="btn" onclick="nextQ()">'+(last? 'See my result' : 'Next')+'</button>');
+  }
+  render(h);
+}
+function beginQs(){S.i=0;S.picked=null;viewRound();}
+function pick(v){
+  if(S.picked!==null) return;
+  var q = ROUNDS[S.r].qs[S.i];
+  S.picked = v; S.answered++;
+  if(v===q.correct) S.score[S.r]+=10;
+  var y = window.scrollY;
+  viewRound();
+  window.scrollTo(0,document.body.scrollHeight);
+}
+function nextQ(){
+  S.picked=null; S.i++;
+  if(S.i>=ROUNDS[S.r].qs.length){
+    S.r++; S.i=-1;
+    if(S.r>=ROUNDS.length){ S.screen="end"; viewEnd(); return; }
+  }
+  viewRound();
+}
+
+function level(){
+  var p = pts()/MAXPTS;
+  if(p>=0.85) return {n:"Impact level",t:"You look past the numbers to real change, and you ask what would have happened anyway. Keep asking it of every venture, including your own."};
+  if(p>=0.6)  return {n:"Outcome level",t:"You look beyond what was delivered to what changed for people. Next step: always ask “compared with what?”"};
+  return {n:"Output level",t:"You notice what gets delivered. Next step: ask what changed for people, and whether it would have happened anyway. Play again and see how far you get."};
+}
+
+function viewEnd(){
+  var L = level(), h = hdr();
+  h += '<div class="kicker">Your result</div><h1>'+pts()+' / '+MAXPTS+' points</h1>';
+  h += '<div class="level"><div class="kicker">You think at the</div><h2>'+L.n+'</h2><div>'+L.t+'</div></div>';
+  h += '<div class="callout"><b>Remember:</b> Input is what you put in. Output is quantity. Outcome is quality. Impact is real long-term change: what would not have happened without you.</div>';
+  h += '<button class="btn ghost" onclick="downloadTXT()">Download my result (text)</button>';
+  if(YOUTUBE_URL) h += '<p style="margin-top:18px">Which one surprised you? Tell us in the comments on our <a href="'+esc(YOUTUBE_URL)+'" target="_blank" rel="noopener">YouTube channel</a>.</p>';
+  else h += '<p style="margin-top:18px" class="muted">Which card surprised you? Tell us in the comments under the video.</p>';
+  h += '<button class="btn" onclick="reset();viewIntro()">Play again</button>';
+  render(h);
+}
+
+/* ------------ Saving results ------------ */
+function resultText(){
+  var L=level();
+  var t = "EFFECTIVE IMPACT · Support the Global Goals\n\n";
+  t += "Score: "+pts()+" / "+MAXPTS+" ("+L.n+")\n";
+  t += "\nInput = what you put in. Output = quantity. Outcome = quality. Impact = real long-term change, compared with what would have happened anyway.\n";
+  return t;
+}
+function save(name,blob){
+  var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
+}
+function downloadTXT(){save("my-impact-results.txt",new Blob([resultText()],{type:"text/plain"}));}
+viewIntro();
+</script>
+</body>
+</html>
