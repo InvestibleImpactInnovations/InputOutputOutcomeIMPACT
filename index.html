@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Support the Global Goals · Effective Impact</title>
 <meta name="description" content="A 5-minute game: can you tell what you deliver from what really changes?">
+<link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -117,7 +118,27 @@ a{color:var(--blue);font-weight:700}
 
 <script>
 /* ------------ Settings you can change ------------ */
+var GOATCOUNTER_CODE = "";   // your GoatCounter site code, e.g. "alcanne" (from alcanne.goatcounter.com). Empty = no counting.
+var IN_APP = /FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger|Messenger/i.test(navigator.userAgent||"");  // Facebook/Instagram built-in browsers block downloads
 var YOUTUBE_URL = "";   // paste your channel or video link here; it then shows on the last screen
+
+
+/* ------------ Counting (GoatCounter: no cookies, no personal data) ------------ */
+var _gcQueue=[];
+function track(path,title){
+  if(!GOATCOUNTER_CODE) return;
+  if(window.goatcounter && window.goatcounter.count){ window.goatcounter.count({path:path,title:title,event:true}); }
+  else _gcQueue.push([path,title]);
+}
+(function(){
+  if(!GOATCOUNTER_CODE) return;
+  var sc=document.createElement("script");
+  sc.async=true;
+  sc.setAttribute("data-goatcounter","https://"+GOATCOUNTER_CODE+".goatcounter.com/count");
+  sc.src="https://gc.zgo.at/count.js";
+  sc.onload=function(){ _gcQueue.splice(0).forEach(function(q){ if(window.goatcounter&&window.goatcounter.count) window.goatcounter.count({path:q[0],title:q[1],event:true}); }); };
+  document.head.appendChild(sc);
+})();
 
 /* ------------ Content ------------ */
 var STAGES = {
@@ -205,6 +226,7 @@ function viewIntro(){
    '<div class="foot">8 quick cards. Tap where each one belongs.</div>');
 }
 function viewExample(){
+  track('game-1-play-tapped','Tapped Play the game');
   render('<div class="compact">'+hdr()+
    '<div class="kicker">First, an example</div>'+
    '<h2>What our own course is aiming for</h2>'+
@@ -252,7 +274,7 @@ function viewRound(){
   }
   render(h);
 }
-function beginQs(){S.i=0;S.picked=null;viewRound();}
+function beginQs(){track('game-2-cards-started','Started the cards');S.i=0;S.picked=null;viewRound();}
 function pick(v){
   if(S.picked!==null) return;
   var q = ROUNDS[S.r].qs[S.i];
@@ -279,11 +301,14 @@ function level(){
 }
 
 function viewEnd(){
+  track('game-3-finished','Finished the game');
   var L = level(), h = hdr();
   h += '<div class="kicker">Your result</div><h1>'+pts()+' / '+MAXPTS+' points</h1>';
   h += '<div class="level"><div class="kicker">You think at the</div><h2>'+L.n+'</h2><div>'+L.t+'</div></div>';
   h += '<div class="callout"><b>Remember:</b> Input is what you put in. Output is quantity. Outcome is quality. Impact is real long-term change: what would not have happened without you.</div>';
-  h += '<button class="btn ghost" onclick="downloadTXT()">Download my result (text)</button>';
+  h += '<button class="btn ghost" onclick="copyTXT(this)">Copy my result</button>';
+  if(!IN_APP) h += '<button class="btn ghost" onclick="downloadTXT()">Download my result (text)</button>';
+  else h += '<p class="muted" style="margin-top:12px">Tip: to download your result as a file, open this page in your phone\'s normal browser (tap the ⋯ menu, then "Open in browser").</p>';
   if(YOUTUBE_URL) h += '<p style="margin-top:18px">Which one surprised you? Tell us in the comments on our <a href="'+esc(YOUTUBE_URL)+'" target="_blank" rel="noopener">YouTube channel</a>.</p>';
   else h += '<p style="margin-top:18px" class="muted">Which card surprised you? Tell us in the comments under the video.</p>';
   h += '<button class="btn" onclick="reset();viewIntro()">Play again</button>';
@@ -304,6 +329,12 @@ function save(name,blob){
   setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
 }
 function downloadTXT(){save("my-impact-results.txt",new Blob([resultText()],{type:"text/plain"}));}
+function copyTXT(btn){
+  var t=resultText();
+  function done(){btn.textContent="Copied ✓";setTimeout(function(){btn.textContent="Copy my result";},1800);}
+  function fallback(){try{var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();done();}catch(e){}}
+  try{ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fallback);} else fallback(); }catch(e){fallback();}
+}
 viewIntro();
 </script>
 </body>
