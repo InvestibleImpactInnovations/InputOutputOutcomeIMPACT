@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Support the Global Goals · Effective Impact</title>
-<meta name="description" content="A 5-minute game: can you tell what you deliver from what really changes?">
+<meta name="description" content="A 2-minute game: can you tell what you deliver from what really changes?">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -118,8 +118,9 @@ a{color:var(--blue);font-weight:700}
 
 <script>
 /* ------------ Settings you can change ------------ */
-var GOATCOUNTER_CODE = "";   // your GoatCounter site code, e.g. "alcanne" (from alcanne.goatcounter.com). Empty = no counting.
+var GOATCOUNTER_CODE = "investibleimpactinnovation";   // your GoatCounter site code, e.g. "alcanne" (from alcanne.goatcounter.com). Empty = no counting.
 var IN_APP = /FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger|Messenger/i.test(navigator.userAgent||"");  // Facebook/Instagram built-in browsers block downloads
+var GAME_URL = "https://investibleimpactinnovations.github.io/InputOutputOutcomeIMPACT/";   // shown in the copied/downloaded result so shared results lead back to the game
 var YOUTUBE_URL = "";   // paste your channel or video link here; it then shows on the last screen
 
 
@@ -320,6 +321,7 @@ function resultText(){
   var L=level();
   var t = "EFFECTIVE IMPACT · Support the Global Goals\n\n";
   t += "Score: "+pts()+" / "+MAXPTS+" ("+L.n+")\n";
+  t += "Can you beat my score? Play the free game: "+GAME_URL+"\n";
   t += "\nInput = what you put in. Output = quantity. Outcome = quality. Impact = real long-term change, compared with what would have happened anyway.\n";
   return t;
 }
@@ -328,8 +330,10 @@ function save(name,blob){
   document.body.appendChild(a); a.click();
   setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
 }
-function downloadTXT(){save("my-impact-results.txt",new Blob([resultText()],{type:"text/plain"}));}
+function downloadTXT(){
+  track('game-4-result-downloaded','Downloaded the result');save("my-impact-results.txt",new Blob([resultText()],{type:"text/plain"}));}
 function copyTXT(btn){
+  track('game-4-result-copied','Copied the result');
   var t=resultText();
   function done(){btn.textContent="Copied ✓";setTimeout(function(){btn.textContent="Copy my result";},1800);}
   function fallback(){try{var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();done();}catch(e){}}
